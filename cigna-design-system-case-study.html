@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare Design System — Sachin Kumar M</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F6F2;
+    --bg-panel: #FFFFFF;
+    --ink: #12211D;
+    --ink-muted: #56685F;
+    --teal: #0B5D52;
+    --teal-deep: #073F38;
+    --coral: #D6543D;
+    --amber: #B98226;
+    --sage: #5C8567;
+    --line: rgba(18,33,29,0.14);
+    --line-soft: rgba(18,33,29,0.08);
+    --font-display: 'Instrument Serif', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+
+  ::selection{ background: var(--teal); color: var(--bg); }
+
+  :focus-visible{
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  .wrap{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position: sticky;
+    top:0;
+    z-index: 50;
+    background: rgba(245,246,242,0.86);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+  .nav-name{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .nav-name span{ color: var(--ink-muted); }
+  .nav-links{
+    display:flex;
+    gap: 28px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .nav-links a{
+    text-decoration:none;
+    color: var(--ink-muted);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .nav-links a:hover{ color: var(--teal); border-color: var(--teal); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding: 88px 0 56px;
+  }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 20px;
+    height: 1px;
+    background: var(--teal);
+    display:inline-block;
+  }
+  h1.hero-title{
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(38px, 6vw, 68px);
+    line-height: 1.04;
+    margin: 0 0 26px;
+    max-width: 16ch;
+    letter-spacing: -0.01em;
+  }
+  h1.hero-title em{
+    font-style: italic;
+    color: var(--teal);
+  }
+  .hero-sub{
+    font-size: 18px;
+    color: var(--ink-muted);
+    max-width: 56ch;
+    margin: 0 0 40px;
+  }
+  .hero-meta{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 28px 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .meta-item .k{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .meta-item .v{ font-size: 15px; font-weight: 500; }
+
+  /* ---------- SIGNATURE PANEL (component/token board) ---------- */
+  .panel-section{ padding: 20px 0 90px; }
+  .panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 36px 36px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-label{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  /* token swatches */
+  .tokens{
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .token{
+    border-radius: 3px;
+    overflow:hidden;
+    border: 1px solid var(--line-soft);
+  }
+  .token .swatch{ height: 58px; }
+  .token .tag{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 7px 8px;
+    background: var(--bg-panel);
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+  .token .tag b{ color: var(--ink); display:block; font-weight: 500; }
+
+  /* component grid */
+  .components{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: 22px;
+  }
+  .comp-card{
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 20px;
+    background: #FCFCFA;
+    position: relative;
+  }
+  .comp-card .spec{
+    position:absolute;
+    top:6px; right:10px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    opacity: .7;
+  }
+  .comp-card h4{
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--ink-muted);
+    margin: 0 0 16px;
+    font-weight: 500;
+  }
+  .btn-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .btn{
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    cursor:default;
+  }
+  .btn.primary{ background: var(--teal); color: #fff; }
+  .btn.secondary{ background: transparent; color: var(--teal); border-color: var(--teal); }
+
+  .pill-row{ display:flex; flex-direction:column; gap:10px; }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    padding: 6px 11px;
+    border-radius: 20px;
+    width: fit-content;
+  }
+  .pill::before{ content:""; width:6px; height:6px; border-radius:50%; }
+  .pill.active{ background: rgba(92,133,103,.14); color: var(--sage); }
+  .pill.active::before{ background: var(--sage); }
+  .pill.pending{ background: rgba(185,130,38,.14); color: var(--amber); }
+  .pill.pending::before{ background: var(--amber); }
+  .pill.expired{ background: rgba(214,84,61,.14); color: var(--coral); }
+  .pill.expired::before{ background: var(--coral); }
+
+  .field label{
+    display:block;
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 7px;
+  }
+  .field input{
+    width:100%;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--ink-muted);
+  }
+  .field .hint{
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--coral);
+    font-family: var(--font-mono);
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{ padding: 78px 0; border-top: 1px solid var(--line-soft); }
+  .section-head{
+    display:grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    margin-bottom: 44px;
+  }
+  .section-head .label{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--teal);
+    padding-top: 6px;
+  }
+  h2{
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 40px);
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+    max-width: 20ch;
+  }
+  .section-lead{
+    color: var(--ink-muted);
+    font-size: 16px;
+    max-width: 62ch;
+  }
+  .content-grid{
+    display:grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+  }
+
+  /* stat strip */
+  .stats{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin: 64px 0 0;
+  }
+  .stat{ background: var(--bg); padding: 26px 22px; }
+  .stat .num{
+    font-family: var(--font-display);
+    font-size: 42px;
+    color: var(--teal-deep);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .stat .label{
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* problem cards */
+  .fragment-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .fragment-card{
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 22px;
+    background: var(--bg-panel);
+  }
+  .fragment-card .num{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--coral);
+    margin-bottom: 12px;
+    display:block;
+  }
+  .fragment-card p{ margin:0; font-size: 14.5px; color: var(--ink); }
+
+  /* process list */
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{
+    display:grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .process-item:first-child{ padding-top: 0; }
+  .process-item .idx{
+    font-family: var(--font-display);
+    font-size: 30px;
+    color: var(--line);
+    line-height: 1;
+  }
+  .process-item h3{
+    font-family: var(--font-body);
+    font-size: 16.5px;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  .process-item p{
+    margin:0;
+    color: var(--ink-muted);
+    font-size: 14.5px;
+    max-width: 62ch;
+  }
+
+  /* impact list */
+  .impact-list{ display:flex; flex-direction:column; gap: 0; }
+  .impact-item{
+    display:grid;
+    grid-template-columns: 26px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 15.5px;
+  }
+  .impact-item:first-child{ padding-top:0; }
+  .impact-item .mark{ color: var(--teal); font-family: var(--font-display); font-size: 20px; }
+
+  /* learnings */
+  .quotes{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .quote-card{
+    border-left: 2px solid var(--teal);
+    padding: 4px 0 4px 22px;
+  }
+  .quote-card p{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+    margin:0;
+    color: var(--ink);
+  }
+
+  /* footer */
+  footer{
+    padding: 70px 0 60px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .footer-cta{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  footer h2{ margin-bottom: 8px; }
+  .footer-links{
+    display:flex;
+    gap: 26px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .footer-links a{
+    text-decoration:none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 3px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .footer-links a:hover{ color: var(--teal); border-color: var(--teal); }
+  .footer-note{
+    margin-top: 50px;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* reveal animation */
+  .reveal{
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 880px){
+    .section-head, .content-grid{ grid-template-columns: 1fr; gap: 12px; }
+    .components{ grid-template-columns: 1fr; }
+    .tokens{ grid-template-columns: repeat(3, 1fr); }
+    .stats{ grid-template-columns: repeat(2, 1fr); }
+    .fragment-grid{ grid-template-columns: 1fr; }
+    .quotes{ grid-template-columns: 1fr; }
+    .hero{ padding-top: 60px; }
+    .nav-links{ display:none; }
+  }
+  @media (max-width: 520px){
+    .tokens{ grid-template-columns: repeat(2, 1fr); }
+    .wrap{ padding: 0 20px; }
+    .panel{ padding: 24px 20px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <div class="nav-name">Sachin Kumar M <span>/ Product Designer</span></div>
+    <nav class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#process">Process</a>
+      <a href="#impact">Impact</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" style="border:none; padding-top:88px;">
+    <div class="wrap">
+      <div class="eyebrow">Case Study — Enterprise Healthcare</div>
+      <h1 class="hero-title">One design system for <em>twelve</em> modules, a cloud migration, and a hundred thousand users.</h1>
+      <p class="hero-sub">How a governed Figma design system replaced module-by-module guesswork on Cigna Healthcare's enterprise platform — built and shipped while the platform itself was being migrated from Pega to AWS.</p>
+      <div class="hero-meta">
+        <div class="meta-item"><div class="k">Client</div><div class="v">Cigna Healthcare</div></div>
+        <div class="meta-item"><div class="k">Engagement</div><div class="v">Tata Consultancy Services</div></div>
+        <div class="meta-item"><div class="k">Role</div><div class="v">UX Designer, Design System Owner</div></div>
+        <div class="meta-item"><div class="k">Timeline</div><div class="v">Sep 2023 — Present</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE PANEL: tokens + components -->
+  <section class="panel-section reveal" style="border:none;">
+    <div class="wrap">
+      <div class="panel">
+        <div class="panel-label">
+          <span>design-system / core-tokens.figma</span>
+          <span>dev mode — inspect</span>
+        </div>
+
+        <div class="tokens">
+          <div class="token">
+            <div class="swatch" style="background:var(--teal)"></div>
+            <div class="tag"><b>Primary</b>--color-teal-600</div>
+          </div>
+          <div class="token">
+            <div class="swatch" style="background:var(--teal-deep)"></div>
+            <div class="tag"><b>Primary Deep</b>--color-teal-800</div>
+          </div>
+          <div class="token">
+            <div class="swatch" style="background:var(--ink)"></div>
+            <div class="tag"><b>Ink</b>--color-ink-900</div>
+          </div>
+          <div class="token">
+            <div class="swatch" style="background:var(--sage)"></div>
+            <div class="tag"><b>Success</b>--color-sage-500</div>
+          </div>
+          <div class="token">
+            <div class="swatch" style="background:var(--amber)"></div>
+            <div class="tag"><b>Pending</b>--color-amber-500</div>
+          </div>
+          <div class="token">
+            <div class="swatch" style="background:var(--coral)"></div>
+            <div class="tag"><b>Critical</b>--color-coral-500</div>
+          </div>
+        </div>
+
+        <div class="components">
+          <div class="comp-card">
+            <span class="spec">4px radius</span>
+            <h4>Action / Button</h4>
+            <div class="btn-row">
+              <button class="btn primary">Approve claim</button>
+              <button class="btn secondary">Send back</button>
+            </div>
+          </div>
+          <div class="comp-card">
+            <span class="spec">Inventory status</span>
+            <h4>Status / Pill</h4>
+            <div class="pill-row">
+              <span class="pill active">In stock</span>
+              <span class="pill pending">Low stock</span>
+              <span class="pill expired">Expired — blocked</span>
+            </div>
+          </div>
+          <div class="comp-card">
+            <span class="spec">WCAG 2.1 AA</span>
+            <h4>Form / Input</h4>
+            <div class="field">
+              <label for="demo-input">Member ID</label>
+              <input id="demo-input" type="text" value="CIG-4471-002" readonly>
+              <div class="hint">⚠ Verify member eligibility before submit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEXT / STATS -->
+  <section style="padding-top:0; border:none;">
+    <div class="wrap">
+      <div class="stats reveal">
+        <div class="stat"><div class="num">100K+</div><div class="label">active users across the platform</div></div>
+        <div class="stat"><div class="num">12</div><div class="label">product modules unified under one system</div></div>
+        <div class="stat"><div class="num">150+</div><div class="label">reusable components governed in Figma</div></div>
+        <div class="stat"><div class="num">1,000+</div><div class="label">variants covering state, density &amp; context</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section id="problem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="label">01 — The problem</div>
+        <div>
+          <h2>Twelve teams, twelve versions of the same button.</h2>
+          <p class="section-lead">Before the system existed, every module was effectively being redesigned from scratch — in parallel, under migration pressure, with no shared visual or component language holding it together.</p>
+        </div>
+      </div>
+      <div class="fragment-grid reveal">
+        <div class="fragment-card">
+          <span class="num">FRAGMENT / 01</span>
+          <p>Recurring patterns — tables, alerts, status indicators — rebuilt slightly differently in every module, with no single source of truth.</p>
+        </div>
+        <div class="fragment-card">
+          <span class="num">FRAGMENT / 02</span>
+          <p>Users moving between modules met inconsistent visual treatment and interaction patterns for the same underlying task.</p>
+        </div>
+        <div class="fragment-card">
+          <span class="num">FRAGMENT / 03</span>
+          <p>No shared specs meant engineers interpreted one-off designs screen by screen — slow handoff, avoidable rework.</p>
+        </div>
+        <div class="fragment-card">
+          <span class="num">FRAGMENT / 04</span>
+          <p>Accessibility was checked at final QA, not designed in — a real risk on a healthcare platform serving a wide range of users.</p>
+        </div>
+        <div class="fragment-card">
+          <span class="num">FRAGMENT / 05</span>
+          <p>The Pega → AWS migration meant this had to be solved <em>while</em> the platform was actively being rebuilt — not before.</p>
+        </div>
+        <div class="fragment-card">
+          <span class="num">FRAGMENT / 06</span>
+          <p>Ambiguous, module-specific requirements made it hard for any one team to define what "consistent" should even mean.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="label">02 — The process</div>
+        <div>
+          <h2>Building governance in, not bolting it on.</h2>
+          <p class="section-lead">A system only works if the teams around it can adopt it without a bottleneck. Each stage below was built to hold up on its own once I stepped back.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div></div>
+        <div class="process-list reveal">
+          <div class="process-item">
+            <div class="idx">01</div>
+            <div><h3>Audit &amp; pattern discovery</h3><p>Mapped recurring UI patterns across all 12 modules — navigation, tables, forms, status states — to find what needed systemizing first.</p></div>
+          </div>
+          <div class="process-item">
+            <div class="idx">02</div>
+            <div><h3>Stakeholder alignment</h3><p>Ran workshops with Business Analysts, Architects and Developers to turn ambiguous module requirements into shared flows a common component set could support.</p></div>
+          </div>
+          <div class="process-item">
+            <div class="idx">03</div>
+            <div><h3>Building the system in Figma</h3><p>150+ components, 1,000+ variants, and a token architecture so visual updates propagate system-wide instead of screen by screen.</p></div>
+          </div>
+          <div class="process-item">
+            <div class="idx">04</div>
+            <div><h3>Accessibility by design</h3><p>WCAG 2.1 AA — keyboard navigation, screen reader support, color contrast — validated at the component level, not caught at final QA.</p></div>
+          </div>
+          <div class="process-item">
+            <div class="idx">05</div>
+            <div><h3>Documentation &amp; governance</h3><p>Usage guidelines, state documentation and accessibility notes shipped with every component, so other designers could adopt it independently.</p></div>
+          </div>
+          <div class="process-item">
+            <div class="idx">06</div>
+            <div><h3>Validation</h3><p>Usability testing and heuristic evaluation pressure-tested components before rollout, catching issues before multiple teams built on top of them.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section id="impact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="label">03 — The impact</div>
+        <div>
+          <h2>What changed once teams shared one system.</h2>
+          <p class="section-lead">The system became the shared design language for the platform migration — not a side deliverable, but the thing multiple teams built on top of.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div></div>
+        <div class="impact-list reveal">
+          <div class="impact-item"><span class="mark">–</span><span>Reduced duplicate design effort across product teams by replacing one-off, per-module builds with a shared component library.</span></div>
+          <div class="impact-item"><span class="mark">–</span><span>Improved consistency for 100K+ users, even as the underlying platform was migrated from Pega to AWS.</span></div>
+          <div class="impact-item"><span class="mark">–</span><span>Faster design-to-engineering handoff through documented components, tokens, and Figma Dev Mode.</span></div>
+          <div class="impact-item"><span class="mark">–</span><span>Accessible by default — WCAG 2.1 AA embedded in components, not caught late in QA.</span></div>
+          <div class="impact-item"><span class="mark">–</span><span>Let the legacy-to-cloud migration proceed without disrupting the experience for existing users.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARNINGS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="label">04 — What I learned</div>
+        <div><h2>The system's real test wasn't the component count.</h2></div>
+      </div>
+      <div class="quotes reveal">
+        <div class="quote-card"><p>"A design system earns its keep when other designers can pick it up correctly without you in the room."</p></div>
+        <div class="quote-card"><p>"Governance has to be built alongside the system — bolt it on later and it fragments right back into one-offs."</p></div>
+        <div class="quote-card"><p>"Fixing accessibility once in a component is cheaper than fixing it a dozen times downstream."</p></div>
+        <div class="quote-card"><p>"Rolling this out mid-migration meant sequencing and stakeholder communication mattered as much as the design itself."</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-cta">
+      <div>
+        <h2>Let's talk about your platform.</h2>
+        <p class="section-lead" style="max-width:48ch;">Available for enterprise UX and design systems work — Chennai based, open to relocate.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:er_sachinkumarm@outlook.com">er_sachinkumarm@outlook.com</a>
+        <a href="tel:+919566747221">+91 9566747221</a>
+        <a href="https://linkedin.com/in/sachin1720" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://sachinuxportfolio.vercel.app" target="_blank" rel="noopener">Full Portfolio</a>
+      </div>
+    </div>
+    <div class="footer-note">Sachin Kumar M — Product Designer, Design Systems, Enterprise SaaS · Chennai, India</div>
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el=> io.observe(el));
+  } else {
+    els.forEach(el=> el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>
